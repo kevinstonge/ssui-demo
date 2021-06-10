@@ -1,19 +1,24 @@
-const handle = document.querySelector("#handle");
-const handleContainer = document.querySelector("#control-box");
-const containerRect = handleContainer.getBoundingClientRect();
-const status = {
-    active: false,
-    currentX: 0,
-    currentY: 0,
-    initialX: 0,
-    initialY: 0,
-    xOffset: 0,
-    yOffset: 0,
-    containerTop: containerRect.top,
-    containerLeft: containerRect.left,
-    containerWidth: containerRect.width,
-    containerHeight: containerRect.height,
+const status = {};
+
+const setStatus = () => {
+    status.handle = document.querySelector("#handle");
+    status.handleContainer = document.querySelector("#control-box");
+    status.active = false;
+    status.currentX = 0;
+    status.currentY = 0;
+    status.initialX = 0;
+    status.initialY = 0;
+    status.xOffset = 0;
+    status.yOffset = 0;
+    status.containerRect = status.handleContainer.getBoundingClientRect(),
+    status.containerTop = status.containerRect.top;
+    status.containerLeft = status.containerRect.left;
+    status.containerWidth = status.containerRect.width;
+    status.containerHeight = status.containerRect.height;
+    setTranslate(status.currentX, status.currentY, handle);
+    setPoints(status.currentX, status.currentY);
 }
+
 const dragStart = (e) => {
     e.preventDefault();
     status.initialX = e.clientX - status.xOffset;
@@ -78,7 +83,8 @@ const setPoints = (x, y) => {
     document.querySelector("#box4-points").innerText = (box4 >= 0) ? box4 : 0;
 }
 
-handleContainer.addEventListener("mousedown", dragStart, false);
+setStatus();
+status.handleContainer.addEventListener("mousedown", dragStart, false);
 window.addEventListener("mouseup", dragEnd, false);
 window.addEventListener("mousemove", drag, false);
-
+window.addEventListener("resize", setStatus, false);
